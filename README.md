@@ -43,38 +43,25 @@ Vivado reconstructs hierarchy automatically based on module instantiations.
 
 ## Complete Module Hierarchy
 
+```text
 risc_processor
-|
-|-- instruction_fetch
-|
-|-- update_pc
-|
-|-- control_unit
-|
-|-- instruction_decoder
-|
-|-- datapath_unit
-      |
-      |-- register_bank
-      |
-      |-- data_memory
-      |
-      |-- alu
-            |
-            |-- comparator_unit
-            |
-            |-- logical_ops
-            |     |
-            |     |-- logical_ops_unit
-            |     |-- shift_ops_unit
-            |
-            |-- hamming_unit
-            |
-            |-- adder_subtractor
-      |
-      |-- branch_comparator
-      |
-      |-- cmov_comparator
+├── instruction_fetch
+├── update_pc
+├── control_unit
+├── instruction_decoder
+└── datapath_unit
+    ├── register_bank
+    ├── data_memory
+    ├── alu
+    │   ├── comparator_unit
+    │   ├── logical_ops
+    │   │   ├── logical_ops_unit
+    │   │   └── shift_ops_unit
+    │   ├── hamming_unit
+    │   └── adder_subtractor
+    ├── branch_comparator
+    └── cmov_comparator
+```
 
 ------------------------------------------------------------
 
