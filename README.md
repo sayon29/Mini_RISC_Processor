@@ -7,12 +7,14 @@ The purpose of this project is to explore different Instruction Set Architecture
 
 ## Repository Structure
 
+```text
 custom-cpu-architectures/
 │
 ├── mips-single-cycle/
 ├── riscv32i-single-cycle/
 ├── riscv32i-5stage-pipeline/   (in progress)
 └── README.md
+```
 
 Each processor is implemented as a self-contained design with its own source files, testbenches, and documentation.
 
