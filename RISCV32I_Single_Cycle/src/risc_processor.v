@@ -19,7 +19,6 @@ module risc_processor(
         .reg_write_en(reg_write_en),
         .alu_src_A(alu_srcA),
         .alu_src_B(alu_srcB),
-        .dest_reg_sel(dest_reg_sel),
         .alu_op(alu_op),
         .mem_write_en(mem_write_en),
         .write_back(write_back),
@@ -36,7 +35,6 @@ module risc_processor(
         .reg_write_en(reg_write_en),
         .alu_srcA(alu_srcA),
         .alu_srcB(alu_srcB),
-        .dest_reg_sel(dest_reg_sel),
         .alu_op(alu_op),
         .mem_write_en(mem_write_en),
         .write_back(write_back)

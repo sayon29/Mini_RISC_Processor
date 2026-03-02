@@ -5,7 +5,7 @@ module datapath(
     input wire           alu_src_A,
     input wire           alu_src_B,
     input wire  [3:0]    alu_op,
-    input wire  [4:0]    mem_write_en, 
+    input wire  [3:0]    mem_write_en, 
     input wire  [1:0]    write_back, 
     
     output reg  [31:0]   instruction,
