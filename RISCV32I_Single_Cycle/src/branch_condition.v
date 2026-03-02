@@ -1,6 +1,6 @@
 module branch_condition(
-    input  wire [31:0] rs_data,
-    input  wire [31:0] rt_data,
+    input  wire  [31:0] rs_data,
+    input  wire  [31:0] rt_data,
     input  wire [2:0]  funct3,
     output reg         branch_cond_out
 );
