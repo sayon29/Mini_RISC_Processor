@@ -1,6 +1,6 @@
 module instruction_fetch(
     input  wire        clk,
-    input  wire [31:0] pc_address,  
+    input  wire [6:0] pc_address,  
     output wire [31:0] instruction
 );
 

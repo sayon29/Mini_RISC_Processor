@@ -35,7 +35,7 @@ module reg_bank(
             register_file[5]  <= 32'd30;
             register_file[6]  <= 32'd35;
             register_file[7]  <= 32'd40;
-            register_file[8]  <= 32'd45;
+            register_file[8]  <= 32'd42;
             register_file[9]  <= 32'd50;
             register_file[10] <= 32'd55;
             register_file[11] <= 32'd60;

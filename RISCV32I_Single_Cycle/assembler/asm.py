@@ -41,7 +41,7 @@ def assemble_line(line):
     # S-Type Store (SW)
     elif instr == 'sw':
         rs2, imm, rs1 = get_reg(line[1]), int(line[2]), get_reg(line[3])
-        return ((imm >> 5 & 0x7F) << 25) | (rs2 << 20) | (rs1 << 15) | (2 << 12) | (imm & 0x1F << 7) | 0x23
+        return ((imm >> 5 & 0x7F) << 25) | (rs2 << 20) | (rs1 << 15) | (2 << 12) | ((imm & 0x1F) << 7) | 0x23
 
     # B-Type Branch
     elif instr in ['beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu']:
