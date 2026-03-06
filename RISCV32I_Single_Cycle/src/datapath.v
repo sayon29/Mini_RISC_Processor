@@ -106,7 +106,7 @@ module datapath(
         .addra(alu_result[6:0]),
         .dina(rt_data),
         .enable(mem_enable), 
-        .douta(data_from_mem_net)
+        .douta(data_from_mem)
     );
 
     branch_condition branch_condition_inst (
