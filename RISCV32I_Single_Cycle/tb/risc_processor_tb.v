@@ -45,8 +45,8 @@ module risc_processor_tb;
                  npc);
 
         $display("ALU_SRC_A=%h | ALU_SRC_B=%h",
-                 uut.datapath_inst.alu_src_a,
-                 uut.datapath_inst.alu_src_b);
+                 uut.datapath_inst.muxA_out,
+                 uut.datapath_inst.muxB_out);
 
         $display("ALU_RESULT=%h | RD_DATA=%h",
                  alu_result,

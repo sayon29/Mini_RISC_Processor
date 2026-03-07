@@ -2,11 +2,11 @@ module datapath(
     input wire           clk,
     input wire           rst,
     input wire           reg_write_en,
-    input wire           alu_src_A,
-    input wire           alu_src_B,
+    input wire           muxA_con,
+    input wire           muxB_con,
     input wire  [3:0]    alu_op,
     input wire  [3:0]    mem_write_en, 
-    input wire  [1:0]    write_back, 
+    input wire  [1:0]    mux_writeback_con, 
     input wire           mem_enable,
     
     output reg  [31:0]   instruction,
@@ -16,27 +16,24 @@ module datapath(
     output wire          alu_overflow
 );
 
+    wire [31:0] pc_reg_net;
     wire [31:0] imm_out_net;
     wire [31:0] alu_result_net;
     wire [31:0] data_from_mem;
     wire [31:0] rs_data_net;
     wire [31:0] rt_data_net;
-    wire [31:0] alu_src_a, alu_src_b;
-    wire [31:0] instruction_fetch_out;
+    wire [31:0] muxA_out, muxB_out;
+    wire [31:0] instruction_fetch_net;
     wire        branch_cond;
     wire        alu_carry;
     
     reg  [31:0] pc_plus_one;
     reg  [31:0] rs_data, rt_data;
     reg  [31:0] imm_out;
-    reg  [31:0] write_back_data;
-    
-    initial begin
-       pc_reg <= 32'h0;
-    end
 
     always @(*) begin
-        instruction   = instruction_fetch_out;
+        pc_reg        = pc_reg_net;
+        instruction   = instruction_fetch_net;
         rs_data       = rs_data_net;
         rt_data       = rt_data_net;
         imm_out       = imm_out_net;
@@ -44,19 +41,12 @@ module datapath(
 
         pc_plus_one   = pc_reg + 1; 
 
-        case (write_back)
+        case (mux_writeback_con)
             2'b00:   write_back_data = data_from_mem;
             2'b01:   write_back_data = alu_result;
             2'b10:   write_back_data = pc_plus_one;
             default: write_back_data = 32'h0;
         endcase
-    end
-    
-    always @(posedge clk) begin
-        if (rst)
-            pc_reg <= 32'h0;
-        else
-            pc_reg <= (branch_cond) ? alu_result : pc_plus_one;
     end
 
     wire [4:0] rs1_addr = instruction[19:15];
@@ -65,13 +55,21 @@ module datapath(
     wire [2:0] funct3   = instruction[14:12];
     wire [6:0] opcode   = instruction[6:0];
 
-    assign alu_src_a = (alu_src_A) ? rs_data : pc_plus_one;
-    assign alu_src_b = (alu_src_B) ? rt_data : imm_out;
-
-    instruction_fetch fetch_unit (
-        .clk(clk), 
-        .pc_address(pc_reg), 
-        .instruction(instruction_fetch_out)
+    assign muxA_out = (muxA_con) ? rs_data : pc_plus_one;
+    assign muxB_out = (muxB_con) ? rt_data : imm_out;
+    
+    update_pc update_pc_inst (
+        .clk(clk),
+        .pc_reg(pc_reg_net),
+        .branch_cond(branch_cond),
+        .alu_result(alu_result),
+        .pc_plus_one(pc_plus_one)
+    );
+    
+    instruction_mem instruction_mem_inst (
+        .clka(clk),
+        .addra(pc_reg),
+        .douta(instruction_fetch_net)
     );
 
     reg_bank reg_file_inst (
@@ -92,22 +90,23 @@ module datapath(
     );
 
     alu alu_inst (
-        .in_1(alu_src_a), 
-        .in_2(alu_src_b), 
+        .in_1(muxA_out), 
+        .in_2(muxB_out), 
         .ALU_CON(alu_op),
         .out(alu_result_net), 
         .OV(alu_overflow), 
         .CY(alu_carry)
     );
-
-    data_memory data_mem_inst (
-        .clk(clk), 
-        .wea(mem_write_en), 
+    
+    data_mem data_mem_inst (
+        .clka(clk),
+        .enable(mem_enable),
+        .w_en(mem_write_en), 
         .addra(alu_result[6:0]),
         .dina(rt_data),
-        .enable(mem_enable), 
         .douta(data_from_mem)
     );
+
 
     branch_condition branch_condition_inst (
         .rs_data(rs_data), 

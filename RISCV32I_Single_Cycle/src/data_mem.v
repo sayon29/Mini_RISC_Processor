@@ -1,4 +1,4 @@
-module DATA_MEM(
+module data_mem(
     input clka,
     input [6:0] addra,
     input [3:0] w_en,
